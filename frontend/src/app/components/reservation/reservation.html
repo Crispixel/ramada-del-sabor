@@ -1,0 +1,123 @@
+<div class="main-content">
+  <header class="main-header">
+    <div class="header-img">
+      <a routerLink="/">
+        <img src="assets/imagenes/logo.png" alt="Logo" class="logo" />
+      </a>
+      <div class="header-info">
+        <h1>Reservas</h1>
+        <span class="subtitle">ASEGURA TU MESA EN LA RAMADA</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="form-container" *ngIf="!reservaConfirmada">
+    <form (ngSubmit)="enviarFormulario()" #reservationForm="ngForm" class="review-form">
+
+      <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="reserva.nombre" required placeholder="Ej. Juan Pérez">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" [(ngModel)]="reserva.email" required placeholder="ejemplo@correo.com">
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" [(ngModel)]="reserva.telefono" required placeholder="09XXXXXXXX">
+      </div>
+
+      <div class="form-group">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" [(ngModel)]="reserva.fecha" [min]="fechaMinima" required>
+      </div>
+
+      <div class="form-group">
+        <label>Número de personas</label>
+        <div class="personas-stepper">
+          <button type="button" class="stepper-btn" (click)="cambiarPersonas(-1)" [disabled]="reserva.personas <= 1">
+            <span class="material-icons">remove</span>
+          </button>
+          <span class="personas-valor">{{ reserva.personas }}</span>
+          <button type="button" class="stepper-btn" (click)="cambiarPersonas(1)">
+            <span class="material-icons">add</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Horario disponible</label>
+        <p *ngIf="cargandoHorarios" class="hint-text">Cargando horarios...</p>
+        <div class="horarios-grid" *ngIf="!cargandoHorarios">
+          <button type="button"
+                  *ngFor="let hora of horarios"
+                  class="horario-chip"
+                  [class.selected]="reserva.hora === hora"
+                  (click)="seleccionarHora(hora)">
+            {{ hora }}
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="comentarios">Comentarios (opcional)</label>
+        <textarea id="comentarios" name="comentarios" rows="3" [(ngModel)]="reserva.comentarios" placeholder="Alergias, ocasión especial, preferencia de mesa..."></textarea>
+      </div>
+
+      <p class="error-text" *ngIf="errorEnvio">{{ errorEnvio }}</p>
+
+      <button type="submit" class="submit-btn" [disabled]="!reservationForm.form.valid || enviando">
+        <span class="material-icons">{{ enviando ? 'hourglass_top' : 'event_available' }}</span>
+        {{ enviando ? 'Reservando...' : 'Confirmar Reserva' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="form-container" *ngIf="reservaConfirmada">
+    <div class="confirmation-card">
+      <span class="material-icons confirmation-icon">check_circle</span>
+      <h2>¡Reserva confirmada!</h2>
+      <p class="confirmation-subtitle">Te esperamos en La Ramada del Sabor</p>
+
+      <div class="confirmation-details">
+        <div class="detail-row">
+          <span class="material-icons">confirmation_number</span>
+          <span>Código: <strong>{{ reservaConfirmada.codigo }}</strong></span>
+        </div>
+        <div class="detail-row">
+          <span class="material-icons">person</span>
+          <span>{{ reservaConfirmada.nombre }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="material-icons">calendar_today</span>
+          <span>{{ reservaConfirmada.fecha }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="material-icons">schedule</span>
+          <span>{{ reservaConfirmada.hora }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="material-icons">groups</span>
+          <span>{{ reservaConfirmada.personas }} persona(s)</span>
+        </div>
+      </div>
+
+      <div class="confirmation-actions">
+        <button type="button" class="submit-btn" (click)="hacerOtraReserva()">
+          <span class="material-icons">add_circle</span>
+          Hacer otra reserva
+        </button>
+        <button type="button" class="secondary-btn" (click)="irAlInicio()">
+          <span class="material-icons">home</span>
+          Volver al inicio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <a routerLink="/" class="btn-volver" title="Volver al inicio">
+    <span class="material-icons">arrow_back</span> Volver
+  </a>
+</div>

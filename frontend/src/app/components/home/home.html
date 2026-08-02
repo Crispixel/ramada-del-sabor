@@ -1,0 +1,64 @@
+<div class="main-content">
+  <header class="main-header">
+    <div class="header-img">
+      <img src="assets/imagenes/logo.png" alt="Logo La Ramada del Sabor" class="logo" />
+      <div class="header-info">
+        <h1>La Ramada</h1>
+        <span class="subtitle">RESTAURANT</span>
+        <div class="header-actions">
+          <a routerLink="/reservar" class="reservar-btn" style="text-decoration:none;">
+            <span class="material-icons">event</span> Reservar
+          </a>
+          <span class="tiempo">
+            <span class="material-icons">directions_walk</span>
+            <span>{{ minutosLlegada }}</span> minutos del restaurante
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="buscador">
+      <span class="material-icons">search</span>
+      <input type="text" 
+             [(ngModel)]="terminoBusqueda" 
+             (input)="filtrarPlatos()" 
+             placeholder="Buscar platos...">
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="categoriaActual === 'tipicas'" (click)="cambiarTab('tipicas')">Comidas típicas</button>
+    <button class="tab" [class.active]="categoriaActual === 'carta'" (click)="cambiarTab('carta')">Platos a la carta</button>
+  </div>
+
+  <main>
+    <div *ngFor="let plato of platosFiltrados">
+        <section class="plato" style="cursor:pointer;">
+          <img [src]="'assets/imagenes/' + plato.imagen" [alt]="plato.nombre" />
+          <div class="info">
+            <div class="plato-header">
+              <h2>{{ plato.nombre }}</h2>
+              <div class="plato-rating">
+                <span class="stars">★★★★★</span>
+                <span class="material-icons heart" 
+                      [style.color]="esFavorito(plato.nombre) ? '#ff4444' : '#8f48056d'"
+                      (click)="toggleFavorito(plato.nombre)">
+                      {{ esFavorito(plato.nombre) ? 'favorite' : 'favorite_border' }}
+                </span>
+              </div>
+            </div>
+            <div class="plato-subtitle">{{ categoriaActual === 'tipicas' ? 'Sopa' : 'Plato fuerte' }} · ${{ plato.precio }}</div>
+            <p>{{ plato.descripcion }}</p>
+          </div>
+        </section>
+      <hr>
+    </div>
+    
+    <p *ngIf="platosFiltrados.length === 0" style="text-align:center; padding: 20px;">No se encontraron platos.</p>
+
+  </main>
+
+  <a routerLink="/resenas" class="btn-resenas" title="Deja tu reseña">
+    <span class="material-icons">rate_review</span> Reseñas
+  </a>
+</div>

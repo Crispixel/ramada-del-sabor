@@ -1,0 +1,55 @@
+<div class="main-content">
+    <header class="main-header">
+        <div class="header-img">
+            <a routerLink="/">
+                <img src="assets/imagenes/logo.png" alt="Logo" class="logo" />
+            </a>
+            <div class="header-info">
+                <h1>Reseñas</h1>
+                <span class="subtitle">CUÉNTANOS TU EXPERIENCIA</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="form-container">
+        <form (ngSubmit)="enviarFormulario()" #reviewForm="ngForm" class="review-form">
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" [(ngModel)]="resena.name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" [(ngModel)]="resena.email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Calificación</label>
+                <div class="rating-container">
+                    <div class="star-rating">
+                        <span class="material-icons star" 
+                              *ngFor="let star of [1,2,3,4,5]"
+                              [class.active]="star <= resena.rating"
+                              (click)="setRating(star)">
+                              {{ star <= resena.rating ? 'star' : 'star_border' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Tu opinión</label>
+                <textarea id="comments" name="comments" rows="4" [(ngModel)]="resena.comments" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="!reviewForm.form.valid">
+                <span class="material-icons">send</span>
+                Enviar Reseña
+            </button>
+        </form>
+    </div>
+
+    <a routerLink="/" class="btn-volver" title="Volver al inicio">
+        <span class="material-icons">arrow_back</span> Volver
+    </a>
+</div>
