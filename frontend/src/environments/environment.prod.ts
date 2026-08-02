@@ -3,5 +3,5 @@
 // una vez que lo despliegues (paso 4 de la guía).
 export const environment = {
   production: true,
-  apiUrl: 'https://TU-BACKEND.onrender.com/api'
+  apiUrl: 'https://ramada-del-sabor.onrender.com/api'
 };

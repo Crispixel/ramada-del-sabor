@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node migrate.js && node seed.js && node server.js",
     "migrate": "node migrate.js",
     "seed": "node seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
